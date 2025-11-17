@@ -16,8 +16,6 @@ Gramática Utilizada:
 S -> AA  
 A -> aA | b
 
-Palavra Utilziada: aabb
-
 ## Explicando o Algoritimo LR(0):
 L - Left-to-Right: Infica a direção de leitura da entrada.  
 R - Rightmost Derivation: Indica o tipo de derivação utilizada na análise sintática.  
