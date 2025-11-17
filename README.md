@@ -35,3 +35,49 @@ Reduce-Reduce:
 A -> α.  
 B -> β.
  
+## Estados
+I0:  
+  S' -> .S  
+  S -> .AA  
+  A -> .aA  
+  A -> .b
+
+I1:  
+  S' -> S. (aceite)  
+
+I2:  
+  S -> A.A  
+  A -> .aA  
+  A -> .b
+
+I3:  
+  A -> a.A  
+  A -> .aA  
+  A -> .b
+
+I4:  
+  A -> b.
+
+I5:  
+  S -> AA. (reduce)
+
+I6:  
+  A -> aA. (reduce)
+
+## Tabela de Parsing:
+
+| Estados | Ação |       |     | GO   | TO   |
+|---------|------|-------|-----|------|------|
+|         | a    | b     | $   | S    | A   |
+| 0       | S3   | S4    |     | 1    | 2   |
+| 1       |      |       | aceita |     |     |
+| 2       | S3   | S4    |     |      | 5   |
+| 3       | S3   | S4    |     |      | 6   |
+| 4       | r3   | r3    | r3  |      |     |
+| 5       | r1   | r1    | r1  |      |     |
+| 6       | r2   | r2    | r2  |      |     |
+
+Número de estados: 7 (I0, I1, I2, ...I6)  
+Produções numeradas:  
+ S -> AA (1)  
+ A -> aA (2) | A -> b (3)
