@@ -79,3 +79,8 @@ Número de estados: 7 (I0, I1, I2, ...I6)
 Produções numeradas:  
  S -> AA (1)  
  A -> aA (2) | A -> b (3)
+ 
+
+ # Referências 
+ - Conteúdo passado em Aula
+ - Compiladores: Princípios, Técnicas e Ferramentas (Livro do Dragão)
