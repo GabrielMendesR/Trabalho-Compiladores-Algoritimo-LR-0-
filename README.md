@@ -80,7 +80,42 @@ Produções numeradas:
  S -> AA (1)  
  A -> aA (2) | A -> b (3)
  
+# Desenvolvimento
+
+## 1. Entendendo a Gramática
+
+Primeiro analisamos a gramática e identificamos o tipo de linguagens que ela gera pela regra (a^n b a^m b)  
+### Exemplos:  
+- S => AA => bA => bb (Palavra Mais Simples)
+- S => AA => aAA => abA => abb
+- S => AA => bA => baA => bab
+- S => AA => aAA => abA => abaA => abab
+- S => AA => aAA => aaAA => aabA => aabb
+- S => AA => aAA => abA => abaA => abaaA => abaab
+
+Conseguimos observar alguns padrões nas linguagens obtidas como por exemplo:
+- Sempre teremos a produção exata de 2 'b'
+- A palavra sempre vai terminar com 'b'
+
+Esses padrões vão ser úteis na hora da escolha de palavras para realizar os testes no algoritimo do Parser.
+
+A tabela de AÇÃO e GOTO foram construídas manualemnte, da mesma forma como foi realziada e corrijida em sala.  
+
+### Tabela AÇÃO:
+- SHIFT: Números Positivos ({3} -> Shift para o estado 3)
+- REDUCE: Números Negativos ({-3} -> Reduce numerado de acordo com a regra de produção (3))
+- ACEITE: -1
+- ERRO: 0
+
+### Tabela GOTO:
+- 1: Estado 1
+- 2: Estado 2
+- 5: Estado 5
+- 6: Estado 6
+- 0: Sem Transição
+
 
  # Referências 
  - Conteúdo passado em Aula
  - Compiladores: Princípios, Técnicas e Ferramentas (Livro do Dragão)
+ - Compiladores 11 - Algoritmo de Análise Sintática LR(0) - Exercício de construção da tabela LR(0) (https://www.youtube.com/watch?v=TplJNzFhOU0)
