@@ -76,7 +76,7 @@ Produções numeradas:
 // Tabela AÇÃO
 static const int TABELA_ACAO[TOTAL_ESTADOS][3] = {
     {  3,   4,   0 },  // a: Shift3, b: Shift4, $: erro
-    {  0,   0,  -1 },  // a: erro, b: erro, $: Aceite
+    {  0,   0,  99 },  // a: erro, b: erro, $: Aceite
     {  3,   4,   0 },  // a: Shift3, b: Shift4, $: erro
     {  3,   4,   0 },  // a: Shift3, b: Shift4, $: erro
     { -3,  -3,  -3 },  // Reduce (A -> b)  (3)
@@ -133,13 +133,13 @@ int main() {
     setlocale(LC_ALL, "Portuguese");
     /* Professor, colocamos o '#include <locale.h>' e o 'setlocale(LC_ALL, "Portuguese");' para conseguir fazer os prints com 'ç' e acentuação
     talvez você tenha que mudar o Encoding para o Ixo 8859-1 para exibir direito
-    - CRTL+Shift+P 
-    - Change File Encoding 
-    - Save Witch Encoding 
-    - Wetern Iso (8859-1)
+    1. CRTL+Shift+P (no VSCode)
+    2. Change File Encoding 
+    3. Save Witch Encoding 
+    4. Wetern Iso (8859-1)
     */
 
-    char entrada[1024];
+ char entrada[1024];
     
     printf("\nGramática:\n");
     printf("S -> AA\n");
@@ -154,52 +154,88 @@ int main() {
     
     if(!tokens) return 1;
 
-    int pilha[1000], topo = 0;
-    pilha[0] = 0;
+    struct {
+        int estado;
+        char simbolo;
+    } pilha[1000];
+    
+    int topo = 0;
+    pilha[0].estado = 0;
+    pilha[0].simbolo = ' ';
+    
     int pos = 0;
     char atual = tokens[pos];
 
     printf("\nPProcesso na Pilha de Parsing:\n");
-    printf("Pilha\t\tEntrada\tAção\n");
+    printf("\nPilha\t\t\tEntrada\t\tAção\n");
 
     while(1) {
-        int estado = pilha[topo];
+        int estado = pilha[topo].estado;
         int index = converter_char(atual);
         int operacao = TABELA_ACAO[estado][index];
 
         printf("[");
         for(int i = 0; i <= topo; i++) {
-            printf("%d", pilha[i]);
+            if(pilha[i].simbolo != ' ') {
+                printf("%c " , pilha[i].simbolo);
+            }
+            printf("%d", pilha[i].estado);
             if(i < topo) printf(" ");
         }
         printf("]\t\t");
 
-        for(int i = pos; i < num_tokens; i++) 
+        for(int i = pos; i < num_tokens; i++) {
             printf("%c", tokens[i]);
-        printf("\t");
+        }
+        printf("\t\t");
 
         if(operacao == 0) {
-            printf("Erro :(\n");
+            printf("Erro (Palavra Inválida) :(\n");
             break;
         }
-        if(operacao == -1) {
-            printf("Aceite :)\n");
-            break;
+
+        if(operacao == 99) {
+            if(pos == num_tokens - 1 && atual == '$') {
+                printf("Aceite :)\n");
+                break;
+            } else {
+                printf("Erro (Palavra Inválida) :(\n");
+                break;
+            }
         }
+
         if(operacao > 0) {
             printf("Shift %d\n", operacao);
-            pilha[++topo] = operacao;
+            topo++;
+            pilha[topo].estado = operacao;
+            pilha[topo].simbolo = atual;
             atual = tokens[++pos];
         } else {
             int regra = -operacao;
             printf("Reduce %d\n", regra);
             
+            char simbolo_reduce;
+            switch(regra) {
+                case 1:
+                    simbolo_reduce = 'S';
+                    break;
+                case 2:
+                case 3:
+                    simbolo_reduce = 'A';
+                    break;
+                default:
+                    simbolo_reduce = '?';
+            }
+            
             topo -= regras_tam[regra];
-            int novo_estado = TABELA_GOTO[pilha[topo]][converter_nao_terminal(regras_esq[regra])];
-            pilha[++topo] = novo_estado;
-        }
+            int novo_estado = TABELA_GOTO[pilha[topo].estado][converter_nao_terminal(simbolo_reduce)];
+            topo++;
+            pilha[topo].estado = novo_estado;
+            pilha[topo].simbolo = simbolo_reduce;
+        } 
     }
-
+    
+    printf("\n");
     free(tokens);
     return 0;
 }
