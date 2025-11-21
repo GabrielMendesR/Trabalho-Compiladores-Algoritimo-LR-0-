@@ -99,12 +99,13 @@ Conseguimos observar alguns padrões nas linguagens obtidas como por exemplo:
 
 Esses padrões vão ser úteis na hora da escolha de palavras para realizar os testes no algoritimo do Parser.
 
+## 2. Implementação da Tabela de Parsing
 A tabela de AÇÃO e GOTO foram construídas manualemnte, da mesma forma como foi realziada e corrijida em sala.  
 
 ### Tabela AÇÃO:
 - SHIFT: Números Positivos ({3} -> Shift para o estado 3)
 - REDUCE: Números Negativos ({-3} -> Reduce numerado de acordo com a regra de produção (3))
-- ACEITE: -1
+- ACEITE: 99
 - ERRO: 0
 
 ### Tabela GOTO:
@@ -114,8 +115,26 @@ A tabela de AÇÃO e GOTO foram construídas manualemnte, da mesma forma como fo
 - 6: Estado 6
 - 0: Sem Transição
 
+## 3. Estrutura do Código
+- converter_char(char c): Mapeia caracteres de entrada para índices da tabela;  
+- converter_nao_terminal(char nt): Mapeia não-terminais para índices;  
+- processar_entrada(): Prepara a string de entrada;  
+- main(): Controla o fluxo principal do parser;  
+
+## 4. Algoritimo de Parsing
+Passo a passo do Algoritimo:
+
+1. Inicialização: Pilha começa com estado 0  
+2. Leitura: Lê próximo token(não-terminal/terminal) da entrada  
+3. Consulta: Verifica tabela AÇÃO com estado atual e token  
+4. Execução:  
+- Shift: Empilha token(não-terminal/terminal) e novo estado;
+- Reduce: Desempilha e aplica produção;
+- Aceite: Palavra Válida :) ;
+- Erro: Palavra Inválida :( ;
 
  # Referências 
  - Conteúdo passado em Aula
  - Compiladores: Princípios, Técnicas e Ferramentas (Livro do Dragão)
  - Compiladores 11 - Algoritmo de Análise Sintática LR(0) - Exercício de construção da tabela LR(0) (https://www.youtube.com/watch?v=TplJNzFhOU0)
+ - LR(0) parser || Example 1 || LR(0) parsing table || Compiler Design (https://www.youtube.com/watch?v=sm_hwNDzc-o)
