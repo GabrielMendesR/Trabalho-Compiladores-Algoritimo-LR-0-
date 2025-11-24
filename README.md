@@ -133,6 +133,14 @@ Passo a passo do Algoritimo:
 - Aceite: Palavra Válida :) ;
 - Erro: Palavra Inválida :( ;
 
+## 5. Problema enfrentado
+
+O principal problemas que enfrentamos foi durante o parsing a validação de algumas palavras que eram validadas antes de terminar,
+como por exemplo, a palavra "bba" não é aceita pela gramática, porém ela estava sendo considerada correta pois após processar os dois "b"
+ela realizava os REDUCES e chegava no ACEITE, sobrando assim um "a" no Buffer de entrada (palavra).  
+A correção foi bem simples, apenas aplicamos a lógica para verificar se ao chegarmos no ACEITE também estamos no "$", para isso também tivemos que diferenciar o REDUCE do ACEITE pos ambos estavam (-1).
+
+
  # Referências 
  - Conteúdo passado em Aula
  - Compiladores: Princípios, Técnicas e Ferramentas (Livro do Dragão)
